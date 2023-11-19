@@ -39,4 +39,4 @@ Embedded Routers
 
 *stream with fileName=${appName}.mobileconfig*
 
-- **GET: /webclip/generate?xml** `The Generate function called, rendering html`
+- **GET: /webclip/generate?xml** `The Generate function called, rendering xml`
