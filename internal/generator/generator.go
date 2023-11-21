@@ -11,10 +11,12 @@
 
 package generator
 
+import "os"
+
 type (
 	Generator interface {
 		Generate(arg Arg) (mobileConfig string, err error)
-		GenerateFile(arg Arg) (file string, err error)
+		GenerateFile(arg Arg, file *os.File) (err error)
 	}
 	Arg struct {
 		Label               string `json:"name"`

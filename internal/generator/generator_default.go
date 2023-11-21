@@ -11,18 +11,43 @@
 
 package generator
 
+import (
+	"errors"
+	"io"
+	"os"
+	"strings"
+	"text/template"
+)
+
 type DefaultGenerator struct{}
 
 func NewDefaultGenerator() *DefaultGenerator { return &DefaultGenerator{} }
 
 func (d *DefaultGenerator) Generate(arg Arg) (mobileConfig string, err error) {
-	// TODO implement me
-	panic("implement me")
+	var (
+		tpl *template.Template
+	)
+	if tpl, err = template.New("").Parse(defTpl); err != nil {
+		return
+	}
+	var buf strings.Builder
+	if err = tpl.Execute(&buf, arg); err != nil {
+		return
+	}
+	mobileConfig = buf.String()
+	return
 }
 
-func (d *DefaultGenerator) GenerateFile(arg Arg) (file string, err error) {
-	// TODO implement me
-	panic("implement me")
+func (d *DefaultGenerator) GenerateFile(arg Arg, file *os.File) (err error) {
+	if file == nil {
+		return errors.New("file is nil")
+	}
+	mobileConfig, err := d.Generate(arg)
+	if err != nil {
+		return err
+	}
+	_, err = io.WriteString(file, mobileConfig)
+	return
 }
 
 const defTpl = `<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
