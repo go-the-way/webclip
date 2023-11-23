@@ -25,5 +25,6 @@ type (
 		PayloadDisplayName  string `json:"install"`
 		PayloadDescription  string `json:"desc"`
 		PayloadOrganization string `json:"org"`
+		UUID                string `json:"-"`
 	}
 )

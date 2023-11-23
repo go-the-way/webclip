@@ -13,6 +13,7 @@ package generator
 
 import (
 	"errors"
+	"github.com/google/uuid"
 	"io"
 	"os"
 	"strings"
@@ -42,6 +43,9 @@ func (d *DefaultGenerator) GenerateFile(arg Arg, file *os.File) (err error) {
 	if file == nil {
 		return errors.New("file is nil")
 	}
+	if arg.UUID == "" {
+		arg.UUID = uuid.New().String()
+	}
 	mobileConfig, err := d.Generate(arg)
 	if err != nil {
 		return err
@@ -62,11 +66,11 @@ const defTpl = `<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www
         <array>
             <dict>
                 <key>FullScreen</key>
-                <{{.FullScreen}}/>
+                <true/>
                 <key>Icon</key>
                 <data>{{.Icon}}</data>
                 <key>IsRemovable</key>
-                <{{.IsRemovable}}/>
+                <false/>
                 <key>Label</key>
                 <string>{{.Label}}</string>
                 <key>PayloadDescription</key>
