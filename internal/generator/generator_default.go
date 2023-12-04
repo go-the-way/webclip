@@ -12,11 +12,10 @@
 package generator
 
 import (
+	"bytes"
 	"errors"
 	"github.com/google/uuid"
-	"io"
 	"os"
-	"strings"
 	"text/template"
 )
 
@@ -24,18 +23,18 @@ type DefaultGenerator struct{}
 
 func NewDefaultGenerator() *DefaultGenerator { return &DefaultGenerator{} }
 
-func (d *DefaultGenerator) Generate(arg Arg) (mobileConfig string, err error) {
+func (d *DefaultGenerator) Generate(arg Arg) (buf []byte, err error) {
 	var (
 		tpl *template.Template
 	)
 	if tpl, err = template.New("").Parse(defTpl); err != nil {
 		return
 	}
-	var buf strings.Builder
-	if err = tpl.Execute(&buf, arg); err != nil {
+	var bf bytes.Buffer
+	if err = tpl.Execute(&bf, arg); err != nil {
 		return
 	}
-	mobileConfig = buf.String()
+	buf = bf.Bytes()
 	return
 }
 
@@ -46,11 +45,11 @@ func (d *DefaultGenerator) GenerateFile(arg Arg, file *os.File) (err error) {
 	if arg.UUID == "" {
 		arg.UUID = uuid.New().String()
 	}
-	mobileConfig, err := d.Generate(arg)
+	buf, err := d.Generate(arg)
 	if err != nil {
 		return err
 	}
-	_, err = io.WriteString(file, mobileConfig)
+	_, err = file.Write(buf)
 	return
 }
 

@@ -11,11 +11,14 @@
 
 package generator
 
-import "os"
+import (
+	"encoding/json"
+	"os"
+)
 
 type (
 	Generator interface {
-		Generate(arg Arg) (mobileConfig string, err error)
+		Generate(arg Arg) (buf []byte, err error)
 		GenerateFile(arg Arg, file *os.File) (err error)
 	}
 	Arg struct {
@@ -28,3 +31,8 @@ type (
 		UUID                string `json:"-"`
 	}
 )
+
+func (a *Arg) JSON() (jsonStr string) {
+	buf, _ := json.Marshal(a)
+	return string(buf)
+}

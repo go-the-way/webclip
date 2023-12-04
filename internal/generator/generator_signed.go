@@ -12,8 +12,12 @@
 package generator
 
 import (
+	"encoding/json"
+	"errors"
 	"io"
+	"net/http"
 	"os"
+	"strings"
 )
 
 const (
@@ -32,25 +36,47 @@ func NewSignedGenerator(iviUrl string, cfgUrl string) *SignedGenerator {
 
 func DefaultSignedGenerator() *SignedGenerator { return NewSignedGenerator(iviUrl, cfgUrl) }
 
-func (s *SignedGenerator) Generate(arg Arg) (mobileConfig string, err error) {
-	// TODO implement me
-	panic("implement me")
+func (s *SignedGenerator) Generate(arg Arg) (buf []byte, err error) {
+	reqUrl := s.IviUrl + s.CfgUrl
+	resp, rErr := http.Post(reqUrl, "application/json;charset=UTF-8", strings.NewReader(arg.JSON()))
+	if rErr != nil {
+		err = rErr
+		return
+	}
+	bf, bErr := io.ReadAll(resp.Body)
+	if bErr != nil {
+		err = bErr
+		return
+	}
+	type result struct {
+		Id string `json:"id"`
+	}
+	var rs result
+	// {"id":"656d953d"}
+	if err = json.Unmarshal(bf, &rs); err != nil {
+		return
+	}
+	if rs.Id == "" {
+		err = errors.New("cfg id is empty")
+		return
+	}
+	reqUrl += "?" + rs.Id
+	resp, rErr = http.Get(reqUrl)
+	if rErr != nil {
+		err = rErr
+		return
+	}
+	return io.ReadAll(resp.Body)
 }
 
-func (s *SignedGenerator) GenerateFile(arg Arg) (file string, err error) {
-	var (
-		mobileConfig string
-		tempFile     *os.File
-	)
-	if mobileConfig, err = s.Generate(arg); err != nil {
-		return
+func (s *SignedGenerator) GenerateFile(arg Arg, file *os.File) (err error) {
+	if file == nil {
+		return errors.New("file is nil")
 	}
-	if tempFile, err = os.CreateTemp("", arg.Label+".mobileconfig"); err != nil {
-		return "", err
+	buf, err := s.Generate(arg)
+	if err != nil {
+		return err
 	}
-	defer func() { _ = tempFile.Close() }()
-	if _, err = io.WriteString(tempFile, mobileConfig); err != nil {
-		return
-	}
-	return tempFile.Name(), nil
+	_, err = file.Write(buf)
+	return
 }

@@ -20,14 +20,16 @@ const b64 = `UklGRhSdAABXRUJQVlA4IAidAADw2QKdASqAAuACPpE+nEsloyMnpBDL2PASCWVuxLu
 
 func TestDefaultGenerator_Generate(t *testing.T) {
 	d := &DefaultGenerator{}
-	t.Log(d.Generate(Arg{
+	buf, err := d.Generate(Arg{
 		Label:               "MyApp",
 		Icon:                b64,
 		URL:                 "http://www.qq.com",
 		PayloadDisplayName:  "PayloadDisplayName",
 		PayloadDescription:  "PayloadDescription",
 		PayloadOrganization: "ivi.cx",
-	}))
+	})
+	t.Log(string(buf))
+	t.Log(err)
 }
 
 func TestDefaultGenerator_GenerateFile(t *testing.T) {
