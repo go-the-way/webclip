@@ -17,12 +17,16 @@ import (
 )
 
 var (
-	IconString      = internal.IconString
-	IconFile        = internal.IconFile
-	IconUri         = internal.IconUri
-	IconReader      = internal.IconReader
-	Generator       = generator.NewDefaultGenerator()
-	SignedGenerator = generator.DefaultSignedGenerator()
+	IconString         = internal.IconString
+	IconFile           = internal.IconFile
+	IconUri            = internal.IconUri
+	IconReader         = internal.IconReader
+	Generator          = generator.NewDefaultGenerator()
+	SignedGenerator    = generator.DefaultSignedGenerator()
+	Generate           = Generator.Generate
+	GenerateFile       = Generator.GenerateFile
+	SignedGenerate     = SignedGenerator.Generate
+	SignedGenerateFile = SignedGenerator.GenerateFile
 	// Serve           = serve
 	// ServeRouter     = serveRouter
 )
