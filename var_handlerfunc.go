@@ -11,52 +11,47 @@
 
 package webclip
 
-import (
-	"net/http"
-
-	"github.com/rwscode/webclip/middleware"
-)
-
-func generateHandlerFunc(middlewares ...http.HandlerFunc) http.HandlerFunc {
-	h := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodPost {
-			w.WriteHeader(http.StatusMethodNotAllowed)
-			return
-		}
-		appName := r.FormValue("appName")
-		if appName == "" {
-			writeJSON(w, `{"err":"missing appName"}`)
-			return
-		}
-		appUrl := r.FormValue("appUrl")
-		if appUrl == "" {
-			writeJSON(w, `{"err":"missing appUrl"}`)
-			return
-		}
-		appIcon, _, err := r.FormFile("appIcon")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		if appIcon == nil {
-			writeJSON(w, `{"err":"missing appIcon"}`)
-			return
-		}
-		removable := r.FormValue("removable") == "true"
-		fullScreen := r.FormValue("fullScreen") == "true"
-		icon := IconReader(appIcon)
-		mobileConfigContent, err := Generate(appName, appUrl, icon, removable, fullScreen)
-		if err != nil {
-			writeJSON(w, `{"err":"`+err.Error()+`"}`)
-			return
-		}
-		if r.URL.Query().Has("xml") {
-			writeXML(w, mobileConfigContent)
-			return
-		}
-		writeStream(w, mobileConfigContent, appName+".mobileconfig")
-		return
-	})
-	middlewares = append(middlewares, middleware.GzipHandler(h).ServeHTTP)
-	return walkHandlerFunc(middlewares...)
-}
+//
+// func generateHandlerFunc(middlewares ...http.HandlerFunc) http.HandlerFunc {
+// 	h := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+// 		if r.Method != http.MethodPost {
+// 			w.WriteHeader(http.StatusMethodNotAllowed)
+// 			return
+// 		}
+// 		appName := r.FormValue("appName")
+// 		if appName == "" {
+// 			writeJSON(w, `{"err":"missing appName"}`)
+// 			return
+// 		}
+// 		appUrl := r.FormValue("appUrl")
+// 		if appUrl == "" {
+// 			writeJSON(w, `{"err":"missing appUrl"}`)
+// 			return
+// 		}
+// 		appIcon, _, err := r.FormFile("appIcon")
+// 		if err != nil {
+// 			http.Error(w, err.Error(), http.StatusInternalServerError)
+// 			return
+// 		}
+// 		if appIcon == nil {
+// 			writeJSON(w, `{"err":"missing appIcon"}`)
+// 			return
+// 		}
+// 		removable := r.FormValue("removable") == "true"
+// 		fullScreen := r.FormValue("fullScreen") == "true"
+// 		icon := IconReader(appIcon)
+// 		mobileConfigContent, err := Generate(appName, appUrl, icon, removable, fullScreen)
+// 		if err != nil {
+// 			writeJSON(w, `{"err":"`+err.Error()+`"}`)
+// 			return
+// 		}
+// 		if r.URL.Query().Has("xml") {
+// 			writeXML(w, mobileConfigContent)
+// 			return
+// 		}
+// 		writeStream(w, mobileConfigContent, appName+".mobileconfig")
+// 		return
+// 	})
+// 	middlewares = append(middlewares, middleware.GzipHandler(h).ServeHTTP)
+// 	return walkHandlerFunc(middlewares...)
+// }

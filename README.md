@@ -11,7 +11,8 @@ Functions
 - **IconFile** `The app icon from file`
 - **IconUri** `The app icon from uri resource`
 - **IconReader** `The app icon from reader`
-- **Generate** `Generate the *.mobileconfig content`
+- **DefaultGenerator** `Generator without signed`
+- **SignedGenerator** `Generator with ivi signed`
 - **WrappedGenerateHandlerFunc** `Get the wrapped generate handler func`
 - **Serve** `Serve embedded http server`
 - **ServeRoute** `Serve embedded http server with custom routers`

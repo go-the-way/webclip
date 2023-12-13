@@ -11,19 +11,11 @@
 
 package webclip
 
-import (
-	"log"
-	"net/http"
-	"os"
-
-	"github.com/rwscode/webclip/middleware"
-)
-
-func serve(addr string) { ServeRouter(addr, "/webclip/generate") }
-
-func serveRouter(addr, generateRouter string) {
-	logger := log.New(os.Stdout, "[webclip] ", log.LstdFlags|log.Lshortfile)
-	logger.Println("served on " + addr)
-	http.HandleFunc(generateRouter, WrappedGenerateHandlerFunc(middleware.Cors()))
-	logger.Println(http.ListenAndServe(addr, nil))
-}
+// func serve(addr string) { ServeRouter(addr, "/webclip/generate") }
+//
+// func serveRouter(addr, generateRouter string) {
+// 	logger := log.New(os.Stdout, "[webclip] ", log.LstdFlags|log.Lshortfile)
+// 	logger.Println("served on " + addr)
+// 	http.HandleFunc(generateRouter, WrappedGenerateHandlerFunc(middleware.Cors()))
+// 	logger.Println(http.ListenAndServe(addr, nil))
+// }

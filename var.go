@@ -13,17 +13,16 @@ package webclip
 
 import (
 	"github.com/rwscode/webclip/internal"
+	"github.com/rwscode/webclip/internal/generator"
 )
 
 var (
-	IconString = internal.IconString
-	IconFile   = internal.IconFile
-	IconUri    = internal.IconUri
-	IconReader = internal.IconReader
-	Generate   = internal.Generate
-
-	WrappedGenerateHandlerFunc = generateHandlerFunc
-
-	Serve       = serve
-	ServeRouter = serveRouter
+	IconString      = internal.IconString
+	IconFile        = internal.IconFile
+	IconUri         = internal.IconUri
+	IconReader      = internal.IconReader
+	Generator       = generator.NewDefaultGenerator()
+	SignedGenerator = generator.DefaultSignedGenerator()
+	// Serve           = serve
+	// ServeRouter     = serveRouter
 )
