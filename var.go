@@ -16,6 +16,10 @@ import (
 	"github.com/rwscode/webclip/internal/generator"
 )
 
+type (
+	GenerateArg = generator.Arg
+)
+
 var (
 	IconString         = internal.IconString
 	IconFile           = internal.IconFile
