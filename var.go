@@ -31,6 +31,7 @@ var (
 	GenerateFile       = Generator.GenerateFile
 	SignedGenerate     = SignedGenerator.Generate
 	SignedGenerateFile = SignedGenerator.GenerateFile
+
 	// Serve           = serve
 	// ServeRouter     = serveRouter
 )
