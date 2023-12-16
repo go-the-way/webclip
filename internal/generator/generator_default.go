@@ -24,6 +24,9 @@ type DefaultGenerator struct{}
 func NewDefaultGenerator() *DefaultGenerator { return &DefaultGenerator{} }
 
 func (d *DefaultGenerator) Generate(arg Arg) (buf []byte, err error) {
+	if arg.UUID == "" {
+		arg.UUID = uuid.New().String()
+	}
 	var (
 		tpl *template.Template
 	)
