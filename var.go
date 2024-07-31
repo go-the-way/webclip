@@ -12,8 +12,8 @@
 package webclip
 
 import (
-	"github.com/rwscode/webclip/internal"
-	"github.com/rwscode/webclip/internal/generator"
+	"github.com/go-the-way/webclip/internal"
+	"github.com/go-the-way/webclip/internal/generator"
 )
 
 type (

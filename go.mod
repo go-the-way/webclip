@@ -1,4 +1,4 @@
-module github.com/rwscode/webclip
+module github.com/go-the-way/webclip
 
 go 1.18
 
